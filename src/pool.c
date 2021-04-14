@@ -3,7 +3,7 @@
 #include "pool.h"
 
 
-void p_init_pool(struct p_info *pool, struct p_info *prev, int item_size, int capacity) {
+void p_init_pool(struct p_list *pool, struct p_list *prev, int item_size, int capacity) {
     pool->data = malloc(item_size * capacity);
     pool->items = malloc(sizeof(struct p_item) * capacity);
 
@@ -31,7 +31,7 @@ void p_init_pool(struct p_info *pool, struct p_info *prev, int item_size, int ca
 }
 
 
-void p_free_pool(struct p_info *pool) {
+void p_free_pool(struct p_list *pool) {
     if (pool->next != NULL) {
         pool->next->prev = pool->prev;
     }
@@ -44,7 +44,7 @@ void p_free_pool(struct p_info *pool) {
     free(pool->data);
 }
 
-struct p_item *p_alloc_item_in_pool(struct p_info *pool, int **index) {
+struct p_item *p_alloc_item_in_pool(struct p_list *pool, int *index) {
     struct p_item *res = &pool->items[pool->first_free];
     *index += pool->first_free;
 
@@ -63,7 +63,7 @@ struct p_item *p_alloc_item_in_pool(struct p_info *pool, int **index) {
     return res;
 }
 
-struct p_item *p_alloc_item(struct p_info *pool, int **index) {
+struct p_item *p_alloc_item(struct p_list *pool, int *index) {
     if (index) {
         *index = 0;
     }
@@ -84,7 +84,7 @@ struct p_item *p_alloc_item(struct p_info *pool, int **index) {
 
     if (pool->num_used == pool->capacity) {
         // pool->next is NULL
-        pool->next = malloc(sizeof(struct p_info));
+        pool->next = malloc(sizeof(struct p_list));
         p_init_pool(pool->next, pool, pool->item_size, pool->capacity);
     }
 
@@ -92,7 +92,7 @@ struct p_item *p_alloc_item(struct p_info *pool, int **index) {
 }
 
 void p_free_item(struct p_item *item) {
-    struct p_info *pool = item->pool;
+    struct p_list *pool = item->pool;
 
     item->occupied = 0;
 
@@ -111,11 +111,11 @@ void p_free_item(struct p_item *item) {
     }
 }
 
-struct p_item *p_get_item(struct p_info *pool, int index) {
-    int after = index / pool->capacity;
-    index %= pool->capacity;
+struct p_item *p_get_item(struct p_list *pool, int which) {
+    int after_segs = which / pool->capacity;
+    which %= pool->capacity;
 
-    while (after--) {
+    while (after_segs--) {
         pool = pool->next;
 
         if (!pool) {
@@ -123,5 +123,72 @@ struct p_item *p_get_item(struct p_info *pool, int index) {
         }
     }
 
-    return &pool->items[index];
+    return &pool->items[which];
 }
+
+static void p_root_guarantee_list(struct p_root *root) {
+    if (root->list == NULL) {
+        root->list = malloc(sizeof(struct p_list));
+        p_init_pool(root->list, NULL, root->item_size, root->capacity);
+
+        root->head = root->list;
+    }
+
+    else if (root->head == NULL) {
+        int num_segs = 0;
+
+        for (root->head = root->list; root->head->next != NULL; root->head = root->head->next) {
+            num_segs++;
+        }
+
+        root->head_index_offs = root->capacity * num_segs;
+    }
+}
+
+void p_root_initialize(struct p_root *root, int item_size, int capacity) {
+    root->list = NULL;
+    root->head = NULL;
+    root->head_index_offs = 0;
+    root->capacity = capacity;
+    root->item_size = item_size;
+}
+
+struct p_item *p_root_alloc_item(struct p_root *root, int *index) {
+    p_root_guarantee_list(root);
+
+    struct p_item *res = p_alloc_item(root->head, index);
+
+    if (index) {
+        *index = root->head_index_offs;
+    }
+
+    while (root->head->next != NULL) {
+        root->head = root->head->next;
+    }
+
+    return res;
+}
+
+void p_root_free_item(struct p_root *root, struct p_item *item) {
+    struct p_list *pool = item->pool;
+
+    if (pool->num_used == 1) {
+        root->head_index_offs -= root->capacity;
+
+        if (pool == root->head) {
+            root->head = pool->prev; // may already be NULL
+        }
+    }
+
+    p_free_item(item);
+}
+
+struct p_item *p_root_get_item(struct p_root *root, int which) {
+    if (root->list == NULL) {
+        return NULL;
+    }
+
+    return p_get_item(root->list, which);
+}
+
+

@@ -16,7 +16,7 @@ struct t_fitness {
 };
 
 struct t_trainer {
-    struct p_info fitness_pool;
+    struct p_root fitness_pool;
     struct n_network *net;
 };
 
