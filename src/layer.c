@@ -1,32 +1,24 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "softmax.h"
 #include "layer.h"
+#include "mathutil.h"
 
 
 void l_activ_relu(float *buffer, int size) {
-    for (int i = 0; i < size; i++) {
-        if (buffer[i] < 0) {
-            buffer[i] = 0;
-        }
-    }
+    mu_relu(buffer, size);
 }
 
 void l_activ_sigmoid_fast(float *buffer, int size) {
-    for (int i = 0; i < size; i++) {
-        buffer[i] = 0.5f + buffer[i] / (2.0f + fabsf(buffer[i]) * 2.0f);
-    }
+    mu_sigmoid_fast(buffer, size);
 }
 
 void l_activ_softplus(float *buffer, int size) {
-    for (int i = 0; i < size; i++) {
-        buffer[i] = logf(1.0 + expf(buffer[i]));
-    }
+    mu_softplus(buffer, size);
 }
 
 void l_activ_softmax(float *buffer, int size) {
-    softmax(buffer, size);
+    mu_softmax(buffer, size);
 }
 
 ///////

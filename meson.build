@@ -4,7 +4,7 @@ cc = meson.get_compiler('c')
 
 sources = [
     'src/layer.c',
-    'src/softmax.c',
+    'src/mathutil.c',
     'src/net.c',
     'src/trainer.c',
     'src/pool.c',
