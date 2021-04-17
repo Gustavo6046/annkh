@@ -58,7 +58,7 @@ void *pl_get(struct pl_pool_list *list, int which) {
 }
 
 int pl_has(struct pl_pool_list *list, int which) {
-    return p_root_has(&list->indices, which);
+    return which < list->length && p_root_has(&list->indices, which);
 }
 
 void pl_free(struct pl_pool_list *list, int which) {
