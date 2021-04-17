@@ -8,6 +8,8 @@ sources = [
     'src/net.c',
     'src/trainer.c',
     'src/pool.c',
+    'src/poollist.c',
+    'src/errorc.c',
 ]
 
 m_dep = cc.find_library('m', required: true)
