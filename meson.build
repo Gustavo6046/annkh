@@ -10,7 +10,8 @@ sources = [
     'src/poollist.c',
     'src/errorc.c',
     'src/environment.c',
-    'train/t_hebbian.c',
+    'src/train/t_hebbian.c',
+    'src/train/t_evstrat.c',
 ]
 
 m_dep = cc.find_library('m', required: true)
