@@ -7,9 +7,11 @@
 
 
 struct p_root all_layers = POOL_ROOT(struct l_layer, LAYER_POOL_SIZE);
+struct p_root all_connections = POOL_ROOT(struct n_connection, LAYER_POOL_SIZE);
 
 void n_network_init(struct n_network *net, int in_size, int out_size) {
     pl_initialize(&net->layers, &all_layers, 16);
+    pl_initialize(&net->connections, &all_connections, 32);
 
     net->in_size = in_size;
     net->out_size = out_size;
@@ -45,7 +47,7 @@ int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_acti
     return idx;
 }
 
-int n_network_connect_layers(struct n_network *net, int input, int output) {
+error_code_t n_network_connect_layers(struct n_network *net, int input, int output) {
     if (input == -1 && output == -1) {
         ERR_RET(ES_NET_CONN_INPUT_OUTPUT);
     }
@@ -84,9 +86,11 @@ int n_network_connect_layers(struct n_network *net, int input, int output) {
     from_layer->output_buffer = to_layer->input_buffer + to_layer->in_used;
     to_layer->in_used += from_layer->out_size;
 
-    int idx;
+    struct n_connection *item = pl_allocate(&net->connections, NULL);
+    item->from = input;
+    item->to = output;
 
-    return idx;
+    SUCCESS;
 }
 
 error_code_t n_network_process(struct n_network *net, float *inputs) {
@@ -117,4 +121,21 @@ error_code_t n_network_process_to(struct n_network *net, float *inputs, float *o
     memcpy(outputs, net->output_buffer, sizeof(float) * net->out_size);
 
     SUCCESS;
+}
+
+void n_network_copy(struct n_network *dest, struct n_network *net) {
+    n_network_init(dest, net->in_size, net->out_size);
+
+    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_next(&li);) {
+        struct l_layer *src_layer = li.item;
+        int dest_li = n_network_add_layer(dest, src_layer->type, src_layer->activation, src_layer->in_size, src_layer->out_size);
+
+        struct l_layer *dest_layer = pl_get(&dest->layers, dest_li);
+        memcpy(dest_layer->weights, src_layer->weights, sizeof(float) * src_layer->num_weights);
+    }
+
+    for (struct pl_iter ci = pl_iterate(&net->connections, 0, -1); pl_next(&ci);) {
+        struct n_connection *conn = ci.item;
+        n_network_connect_layers(dest, conn->from, conn->to);
+    }
 }
