@@ -24,8 +24,9 @@ struct e_trainer {
     struct e_environment *env;
     struct e_trainer_type *type;
     struct n_network *reference;
-
+    void *params;
     void *state;
+
     int epochs;
     int max_epochs;
     int active;
@@ -57,9 +58,9 @@ struct e_environment {
 
 void e_env_init(struct e_environment *env, struct e_environment_type *type, struct n_network *net, float *inputs, float *outputs);
 void e_env_deinit(struct e_environment *env);
-void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type);
+void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type, void *params);
 
-void e_trainer_init(struct e_trainer *trainer, struct e_trainer_type *type, struct e_environment *env);
+void e_trainer_init(struct e_trainer *trainer, struct e_trainer_type *type, struct e_environment *env, void *params);
 void e_trainer_deinit(struct e_trainer *trainer);
 
 void e_trainer_use_net(struct e_trainer *trainer, struct n_network *net);

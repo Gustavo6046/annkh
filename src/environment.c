@@ -28,17 +28,12 @@ void e_trainer_apply(struct e_trainer *trainer) {
     trainer->env->net = trainer->reference;
 }
 
-void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type) {
+void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type, void *params) {
     e_env_deinit_trainer(env);
 
     struct e_trainer *trainer = env->trainer = malloc(sizeof(struct e_trainer));
-    trainer->type = type;
-    trainer->reference = env->net;
-    trainer->state = NULL;
-    trainer->epochs = 0;
-    trainer->env = env;
-
-    type->init(trainer);
+    
+    e_trainer_init(trainer, type, env, params);
 }
 
 void e_env_deinit(struct e_environment *env) {
@@ -47,14 +42,19 @@ void e_env_deinit(struct e_environment *env) {
 
 ////
 
-void e_trainer_init(struct e_trainer *trainer, struct e_trainer_type *type, struct e_environment *env) {
+void e_trainer_init(struct e_trainer *trainer, struct e_trainer_type *type, struct e_environment *env, void *params) {
     trainer->env = env;
-    trainer->reference = env->net;
     trainer->epochs = 0;
+    trainer->reference = env->net;
     trainer->type = type;
     trainer->active = 0;
 
-    type->init(trainer);
+    trainer->state = NULL;
+    trainer->params = params;
+
+    if (type->init) {
+        type->init(trainer);
+    }
 }
 
 void e_trainer_deinit(struct e_trainer *trainer) {
@@ -86,15 +86,20 @@ void e_env_step(struct e_environment *env) {
 
             case ENV_DEAD:
                 trainer->type->step(trainer);
-                trainer->type->finished(trainer);
+
+                if (trainer->type->finished) {
+                    trainer->type->finished(trainer);
+                }
                 break;
 
             case ENV_STOPPED:
-                trainer->type->finished(trainer);
+                if (trainer->type->finished) {
+                    trainer->type->finished(trainer);
+                }
                 break;
         }
 
-        if (trainer->type->is_done(trainer)) {
+        if (!trainer->type->is_done || trainer->type->is_done(trainer)) {
             trainer->epochs++;
 
             e_trainer_apply(trainer);
