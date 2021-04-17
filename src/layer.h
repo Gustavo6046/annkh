@@ -15,16 +15,21 @@ struct l_layer_type {
 };
 
 struct l_layer {
+    struct l_layer_type *type;
+
+    void *state;
+    float *weights;
+
+    float *input_buffer;
+    float *output_buffer;
+
+    f_activation activation;
+
     int state_size;
     int num_weights;
     int in_size;
     int out_size;
-
-    struct l_layer_type *type;
-    f_activation activation;
-
-    void *state;
-    float *weights;
+    int in_used;
 };
 
 void l_activ_relu(float *buffer, int size);
@@ -39,7 +44,7 @@ extern struct l_layer_type layer_type_quadratic;
 void l_layer_init(struct l_layer *layer, struct l_layer_type *type, f_activation activation, int in_size, int out_size);
 void l_layer_deinit(struct l_layer *layer);
 
-void l_layer_process(struct l_layer *layer, float *inputs, float *outputs);
+void l_layer_process(struct l_layer *layer);
 
 
 #endif // INC_layer_H

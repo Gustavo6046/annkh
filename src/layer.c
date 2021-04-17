@@ -98,6 +98,8 @@ void l_layer_init(struct l_layer *layer, struct l_layer_type *type, f_activation
     layer->type = type;
 
     type->init(layer);
+
+    layer->input_buffer = malloc(sizeof(float) * in_size);
 }
 
 void l_layer_deinit(struct l_layer *layer) {
@@ -108,10 +110,12 @@ void l_layer_deinit(struct l_layer *layer) {
     if (layer->state != NULL) {
         free(layer->state);
     }
+
+    free(layer->input_buffer);
 }
 
-void l_layer_process(struct l_layer *layer, float *inputs, float *outputs) {
-    layer->type->process(layer, inputs, outputs);
+void l_layer_process(struct l_layer *layer) {
+    layer->type->process(layer, layer->input_buffer, layer->output_buffer);
 }
 
 
