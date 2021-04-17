@@ -42,16 +42,6 @@
        y2="126.18735"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-1.6282336)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient914"
-       id="linearGradient908"
-       x1="103.57492"
-       y1="156.89792"
-       x2="103.57492"
-       y2="126.18735"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,1.4990408,-0.30530135,-77.754899)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -61,8 +51,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="104.17379"
-     inkscape:cy="61.038876"
+     inkscape:cx="65.910693"
+     inkscape:cy="75.749421"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -71,10 +61,10 @@
      inkscape:snap-bbox-edge-midpoints="true"
      inkscape:snap-bbox-midpoints="true"
      inkscape:window-width="1366"
-     inkscape:window-height="737"
+     inkscape:window-height="709"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      fit-margin-top="16"
      fit-margin-left="16"
      fit-margin-bottom="16"
@@ -103,6 +93,12 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-81.756222,-121.85079)">
+    <circle
+       style="fill:#000000;stroke-width:3.96875;stroke-linecap:round;fill-opacity:1"
+       id="path911"
+       cx="105.83331"
+       cy="141.25664"
+       r="14.552083" />
     <ellipse
        style="fill:url(#linearGradient906);fill-opacity:1.0;stroke:none;stroke-width:4.27404;stroke-linecap:round"
        id="path835-3"
@@ -110,39 +106,39 @@
        cy="141.55208"
        r="14.246795" />
     <rect
-       style="fill:url(#linearGradient908);fill-opacity:1;stroke:none;stroke-width:5.27764;stroke-linecap:round"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:5.27764;stroke-linecap:round"
        id="rect893-5"
        width="39.687496"
        height="7.6420431"
        x="85.989555"
        y="148.16667" />
     <circle
-       style="opacity:1;fill:#000000;stroke:none;stroke-width:4.27404;stroke-linecap:round"
+       style="opacity:1;fill:#ffeeaa;stroke:none;stroke-width:4.27404;stroke-linecap:round"
        id="path835"
        cx="106.85098"
        cy="140.33092"
        r="14.246795" />
     <rect
-       style="opacity:1;fill:#000000;stroke:none;stroke-width:5.31266;stroke-linecap:round"
+       style="opacity:1;fill:#ffeeaa;stroke:none;stroke-width:5.31266;stroke-linecap:round"
        id="rect893"
        width="39.687496"
        height="7.7437987"
        x="87.3125"
        y="146.84375" />
     <circle
-       style="fill:#ffe680;stroke:none;stroke-width:2.99183;stroke-linecap:round"
+       style="fill:#000000;stroke:none;stroke-width:2.99183;stroke-linecap:round"
        id="circle839-3"
        cx="106.85098"
        cy="140.33092"
        r="9.972764" />
     <circle
-       style="opacity:1;fill:#000000;stroke:none;stroke-width:2.54306;stroke-linecap:round"
+       style="opacity:1;fill:#ffeeaa;stroke:none;stroke-width:2.54306;stroke-linecap:round"
        id="circle839"
        cx="106.85098"
        cy="138.83501"
        r="8.4768562" />
     <rect
-       style="opacity:1;fill:#ffe680;stroke:none;stroke-width:3.96875;stroke-linecap:round"
+       style="opacity:1;fill:#000000;stroke:none;stroke-width:3.96875;stroke-linecap:round"
        id="rect895"
        width="34.395832"
        height="2.6458333"
