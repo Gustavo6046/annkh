@@ -18,6 +18,7 @@ typedef void (*f_callback_env)(struct e_environment *env);
 struct e_trainer_type {
     f_callback_trainer init, step, finished;
     f_callback_trainer_value is_done;
+    f_callback_trainer deinit;
 };
 
 struct e_trainer {

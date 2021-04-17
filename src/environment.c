@@ -58,6 +58,10 @@ void e_trainer_init(struct e_trainer *trainer, struct e_trainer_type *type, stru
 }
 
 void e_trainer_deinit(struct e_trainer *trainer) {
+    if (trainer->type->deinit) {
+        trainer->type->deinit(trainer);
+    }
+
     trainer->env->trainer = NULL;
 }
 
