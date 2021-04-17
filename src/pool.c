@@ -60,6 +60,8 @@ struct p_item *p_alloc_item_in_pool(struct p_list *pool, int *index) {
         pool->first_free++;
     } while (pool->items[pool->first_free].occupied && pool->first_free < pool->capacity);
 
+    res->occupied = 1;
+
     return res;
 }
 
@@ -111,6 +113,10 @@ void p_free_item(struct p_item *item) {
     }
 }
 
+void p_free_at(struct p_list *pool, int which) {
+    p_free_item(p_get_item(pool, which));
+}
+
 struct p_item *p_get_item(struct p_list *pool, int which) {
     int after_segs = which / pool->capacity;
     which %= pool->capacity;
@@ -124,6 +130,27 @@ struct p_item *p_get_item(struct p_list *pool, int which) {
     }
 
     return &pool->items[which];
+}
+
+void p_deinit(struct p_list *pool) {
+    struct p_list *head = pool;
+
+    while (head->next != NULL) {
+        head = head->next;
+    }
+
+    while (head->prev) {
+        free(head->items);
+        free(head->data);
+
+        head = head->prev;
+
+        free(head->next);
+    }
+
+    free(head->items);
+    free(head->data);
+    free(head);
 }
 
 static void p_root_guarantee_list(struct p_root *root) {
@@ -191,4 +218,21 @@ struct p_item *p_root_get_item(struct p_root *root, int which) {
     return p_get_item(root->list, which);
 }
 
+void p_root_free_at(struct p_root *root, int which) {
+    p_free_at(root->list, which);
+}
 
+void p_root_empty(struct p_root *root) {
+    p_deinit(root->list);
+    root->head = NULL;
+    root->list = NULL;
+    root->head_index_offs = 0;
+}
+
+int p_has(struct p_list *pool, int which) {
+    return p_get_item(pool, which)->occupied;
+}
+
+int p_root_has(struct p_root *root, int which) {
+    return p_root_get_item(root, which)->occupied;
+}

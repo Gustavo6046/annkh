@@ -40,10 +40,19 @@ void p_free_pool(struct p_list *pool);
 struct p_item *p_alloc_item(struct p_list *pool, int *index);
 void p_free_item(struct p_item *item);
 
+int p_has(struct p_list *pool, int which);
+struct p_item *p_get_item(struct p_list *pool, int which);
+void p_free_at(struct p_list *pool, int which);
+
 void p_root_initialize(struct p_root *root, int item_size, int capacity);
+void p_root_empty(struct p_root *root);
+
 struct p_item *p_root_alloc_item(struct p_root *root, int *index);
 void p_root_free_item(struct p_root *root, struct p_item *item);
+
+int p_root_has(struct p_root *root, int which);
 struct p_item *p_root_get_item(struct p_root *root, int which);
+void p_root_free_at(struct p_root *root, int which);
 
 
 #endif // INC_POOL_H
