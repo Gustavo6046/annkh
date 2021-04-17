@@ -53,7 +53,7 @@
        x2="103.57492"
        y2="126.18735"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-0.30530135)" />
+       gradientTransform="translate(-1.6282336)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient914"
@@ -72,13 +72,13 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="31.533679"
-     inkscape:cy="69.768226"
+     inkscape:zoom="2.8"
+     inkscape:cx="104.17379"
+     inkscape:cy="75.32459"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
-     showgrid="false"
+     showgrid="true"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
      inkscape:snap-bbox-midpoints="true"
@@ -118,7 +118,7 @@
     <ellipse
        style="fill:url(#linearGradient906);fill-opacity:1;stroke:none;stroke-width:4.27404;stroke-linecap:round"
        id="path835-3"
-       cx="105.52805"
+       cx="104.20512"
        cy="141.55208"
        r="14.246795" />
     <rect
