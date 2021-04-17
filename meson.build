@@ -6,10 +6,10 @@ sources = [
     'src/layer.c',
     'src/mathutil.c',
     'src/net.c',
-    'src/trainer.c',
     'src/pool.c',
     'src/poollist.c',
     'src/errorc.c',
+    'src/environment.c',
 ]
 
 m_dep = cc.find_library('m', required: true)

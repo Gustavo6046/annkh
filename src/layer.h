@@ -6,12 +6,10 @@
 struct l_layer;
 
 typedef void (*f_activation)(float *buffer, int size);
-typedef void (*f_process)(struct l_layer *layer, float *inputs, float *outputs);
-typedef void (*f_init)(struct l_layer *layer);
 
 struct l_layer_type {
-    f_process process;
-    f_init init;
+    void (*process)(struct l_layer *layer, float *inputs, float *outputs);
+    void (*init)(struct l_layer *layer);
 };
 
 struct l_layer {
