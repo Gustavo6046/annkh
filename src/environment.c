@@ -158,7 +158,7 @@ void e_env_training_deactivate(struct e_environment *env) {
 
 error_code_t e_env_loop(struct e_environment *env, int max_steps) {
     if (env->state == ENV_STARTED) {
-        ERR_RET();
+        ERR_RET(ES_ENV_ALREADY_STARTED);
     }
 
     e_env_start(env);

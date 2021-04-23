@@ -79,7 +79,7 @@ void e_env_stop(struct e_environment *env);
 
 void e_trainer_apply(struct e_trainer *trainer);
 
-void e_env_loop(struct e_environment *env, int max_steps);
+error_code_t e_env_loop(struct e_environment *env, int max_steps);
 void e_env_loopstep(struct e_environment *env, int max_steps);
 
 
