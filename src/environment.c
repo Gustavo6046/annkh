@@ -136,6 +136,10 @@ void e_env_died(struct e_environment *env) {
 }
 
 void e_env_stop(struct e_environment *env) {
+    if (env->type->on_stop) {
+        env->type->on_stop(env);
+    }
+
     env->state = ENV_STOPPED;
     env->steps = 0;
     env->fitness = 0.0;
@@ -152,7 +156,11 @@ void e_env_training_deactivate(struct e_environment *env) {
     env->trainer->epochs = 0;
 }
 
-void e_env_loop(struct e_environment *env, int max_steps) {
+error_code_t e_env_loop(struct e_environment *env, int max_steps) {
+    if (env->state == ENV_STARTED) {
+        ERR_RET();
+    }
+
     e_env_start(env);
 
     while (env->state != ENV_STOPPED) {
@@ -160,20 +168,39 @@ void e_env_loop(struct e_environment *env, int max_steps) {
             e_env_respawn(env);
         }
 
+        if (env->state == ENV_STARTED) {
+            e_env_step(env);
+
+            if (env->steps > max_steps) {
+                e_env_stop(env);
+                break;
+            }
+
+            if (env->state == ENV_STOPPED) {
+                e_env_stop(env);
+                break;
+            }
+        }
+    }
+
+    SUCCESS;
+}
+
+void e_env_loopstep(struct e_environment *env, int max_steps) {
+    if (env->state == ENV_STOPPED) {
+        e_env_start(env);
+    }
+
+    if (env->state == ENV_DEAD) {
+        e_env_respawn(env);
+    }
+
+    if (env->state == ENV_STARTED) {
         e_env_step(env);
 
         if (env->steps > max_steps) {
             e_env_stop(env);
-            break;
+            return;
         }
-
-        if (env->state == ENV_STOPPED) {
-            e_env_stop(env);
-            break;
-        }
-    }
-
-    if (env->type->on_stop) {
-        env->type->on_stop(env);
     }
 }

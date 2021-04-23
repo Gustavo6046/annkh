@@ -15,6 +15,7 @@ enum error_sig_t {
     ES_NET_CONN_LAYER_EXCEEDS,
     ES_NET_PROC_NO_IN_LAYER,
     ES_NET_PROC_NO_OUT_LAYER,
+    ES_ENV_ALREADY_STARTED,
 };
 
 typedef signed int error_code_t;

@@ -8,7 +8,9 @@ const char *const error_names[] = {
     "Tried connecting network input and output directly, which is invalid",
     "Source/destination layer does not match network's defined input/output size",
     "Source layer's output does not fit after occupied inputs of destination layer",
-    "Network has no input layer connection ",
+    "Network has no input layer connection to feed values into",
+    "Network has no output layer connection to fetch values from",
+    "Environment already started; can only call e_env_loop once at a time"
 };
 
 
