@@ -1,6 +1,4 @@
-#ifndef INC_layer_H
-#define INC_layer_H
-
+#pragma once
 
 
 struct l_layer;
@@ -44,6 +42,3 @@ void l_layer_zero_weights(struct l_layer *layer);
 void l_layer_deinit(struct l_layer *layer);
 
 void l_layer_process(struct l_layer *layer);
-
-
-#endif // INC_layer_H

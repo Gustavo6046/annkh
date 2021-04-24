@@ -1,5 +1,4 @@
-#ifndef INC_POOL_H
-#define INC_POOL_H
+#pragma once
 
 #include <stdlib.h> // for NULL in macros
 
@@ -53,6 +52,3 @@ void p_root_free_item(struct p_root *root, struct p_item *item);
 int p_root_has(struct p_root *root, int which);
 struct p_item *p_root_get_item(struct p_root *root, int which);
 void p_root_free_at(struct p_root *root, int which);
-
-
-#endif // INC_POOL_H

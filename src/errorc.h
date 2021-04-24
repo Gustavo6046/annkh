@@ -1,10 +1,10 @@
-#ifndef INC_ERRORC_H
-#define INC_ERRORC_H
+#pragma once
 
 #define ERR_RET(errsig) { return -errsig; }
 #define CALL_RET(val) { int err = (val); if (!es_code_is_success(err)) { return err; } }
 #define SUCCESS { return ES_SUCCESS; }
 #define EMPTY_SUCCESS { return ES_SUCCESS_NO_VALUE; }
+
 
 enum error_sig_t {
     ES_SUCCESS = 0,
@@ -26,6 +26,3 @@ const char *const es_get_string(error_code_t code);
 enum error_sig_t es_get_signal(error_code_t code);
 int es_signal_is_success(enum error_sig_t sig);
 int es_code_is_success(error_code_t code);
-
-
-#endif // INC_ERRORC_H

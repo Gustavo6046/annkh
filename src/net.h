@@ -1,5 +1,4 @@
-#ifndef INC_NET_H
-#define INC_NET_H
+#pragma once
 
 #include "layer.h"
 #include "poollist.h"
@@ -34,6 +33,3 @@ error_code_t n_network_connect_layers(struct n_network *net, int input, int outp
 
 error_code_t n_network_process(struct n_network *net, float *inputs);
 error_code_t n_network_process_to(struct n_network *net, float *inputs, float *outputs);
-
-
-#endif // INC_NET_H

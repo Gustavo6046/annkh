@@ -1,5 +1,4 @@
-#ifndef INC_ENVIRONMENT_H
-#define INC_ENVIRONMENT_H
+#pragma once
 
 #include "layer.h"
 #include "pool.h"
@@ -81,6 +80,3 @@ void e_trainer_apply(struct e_trainer *trainer);
 
 error_code_t e_env_loop(struct e_environment *env, int max_steps);
 void e_env_loopstep(struct e_environment *env, int max_steps);
-
-
-#endif // INC_ENVIRONMENT_H

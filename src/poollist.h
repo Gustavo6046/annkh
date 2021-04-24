@@ -1,5 +1,4 @@
-#ifndef INC_POOLLIST_H
-#define INC_POOLLIST_H
+#pragma once
 
 #include "pool.h"
 
@@ -31,6 +30,3 @@ void pl_free(struct pl_pool_list *list, int which);
 
 struct pl_iter pl_iterate(struct pl_pool_list *list, int from, int to);
 int pl_next(struct pl_iter *iterator);
-
-
-#endif // INC_POOLLIST_H
