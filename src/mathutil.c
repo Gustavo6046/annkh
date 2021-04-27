@@ -2,6 +2,8 @@
 #include "mathutil.h"
 
 
+const float two_pi = 2.0 * M_PI;
+
 void mu_relu(float *buffer, int size) {
     for (int i = 0; i < size; i++) {
         if (buffer[i] < 0) {

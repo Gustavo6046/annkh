@@ -1,6 +1,8 @@
 #pragma once
 
 
+extern const float two_pi;
+
 typedef void (*f_mu_operation)(float *buffer, int size);
 
 void mu_relu(float *buffer, int size);

@@ -1,5 +1,6 @@
 project('annkh', 'c')
 
+
 cc = meson.get_compiler('c')
 
 sources = [
@@ -10,10 +11,12 @@ sources = [
     'src/poollist.c',
     'src/errorc.c',
     'src/environment.c',
+    'src/rng.c',
+    'src/boxmuller.c',
     'src/train/t_hebbian.c',
     'src/train/t_evstrat.c',
 ]
 
 m_dep = cc.find_library('m', required: true)
 
-library('annkh', sources, dependencies: m_dep)
+library('annkh', sources, dependencies: [m_dep])
