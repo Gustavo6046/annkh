@@ -3,7 +3,7 @@
 #include "environment.h"
 
 
-void e_env_init(struct e_environment *env, struct e_environment_type *type, struct n_network *net, float *inputs, float *outputs) {
+void e_env_init(struct e_environment *env, struct e_environment_type *type, void *params, struct n_network *net, float *inputs, float *outputs) {
     env->net = net;
     env->inputs = inputs;
     env->outputs = outputs;
@@ -11,9 +11,12 @@ void e_env_init(struct e_environment *env, struct e_environment_type *type, stru
     env->fitness = 0;
     env->state = ENV_STOPPED;
     env->steps = 0;
+    env->env_state = NULL;
 
     env->type = type;
     env->trainer = NULL;
+
+    type->init(env, params);
 }
 
 static void e_env_deinit_trainer(struct e_environment *env) {
@@ -38,6 +41,12 @@ void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type, 
 
 void e_env_deinit(struct e_environment *env) {
     e_env_deinit_trainer(env);
+
+    env->type->deinit(env);
+
+    if (env->env_state) {
+        free(env->env_state);
+    }
 }
 
 ////

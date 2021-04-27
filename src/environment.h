@@ -13,6 +13,7 @@ struct e_environment;
 typedef void (*f_callback_trainer)(struct e_trainer *trainer);
 typedef int (*f_callback_trainer_value)(struct e_trainer *trainer);
 typedef void (*f_callback_env)(struct e_environment *env);
+typedef void (*f_callback_env_params)(struct e_environment *env, void *params);
 
 struct e_trainer_type {
     f_callback_trainer init, step, finished;
@@ -39,7 +40,8 @@ enum e_env_state {
 };
 
 struct e_environment_type {
-    f_callback_env start, step, on_respawn, on_stop;
+    f_callback_env_params init;
+    f_callback_env deinit, start, step, on_respawn, on_stop;
 };
 
 struct e_environment {
@@ -49,6 +51,8 @@ struct e_environment {
     float *inputs;
     float *outputs;
 
+    void *env_state;
+
     struct e_environment_type *type;
 
     float fitness;
@@ -56,7 +60,7 @@ struct e_environment {
     int steps;
 };
 
-void e_env_init(struct e_environment *env, struct e_environment_type *type, struct n_network *net, float *inputs, float *outputs);
+void e_env_init(struct e_environment *env, struct e_environment_type *type, void *params, struct n_network *net, float *inputs, float *outputs);
 void e_env_deinit(struct e_environment *env);
 void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type, void *params);
 
