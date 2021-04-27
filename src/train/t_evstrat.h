@@ -1,9 +1,10 @@
-#ifndef INC_TRAIN_EVSTRAT_H
-#define INC_TRAIN_EVSTRAT_H
+#pragma once
+
 
 #include "../environment.h"
 #include "../poollist.h"
 #include "../layer.h"
+#include "../boxmuller.h"
 
 
 struct t_params_evolve_strats {
@@ -19,9 +20,7 @@ struct t_state_evolve_strats {
     int current;
     int curr_steps;
     int is_done;
+    struct bm_state boxmuller;
 };
 
 extern struct e_trainer_type t_trainer_evolve_strats;
-
-
-#endif //INC_TRAIN_EVSTRAT_H

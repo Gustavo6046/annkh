@@ -2,8 +2,16 @@
 #include "t_evstrat.h"
 
 
-static void t_evolve_strats_jitter(struct n_network *net, float jitter_width) {
-    // TODO
+static void t_evolve_strats_jitter(struct e_trainer *trainer, struct n_network *net) {
+    struct t_state_evolve_strats *state = trainer->state;
+
+    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_next(&li);) {
+        struct l_layer *layer = li.item;
+
+        for (int i = 0; i < layer->num_weights; i++) {
+            layer->weights[i] += bm_next(&state->boxmuller);
+        }
+    }
 }
 
 static void t_evolve_strats_make_population(struct e_trainer *trainer) {
@@ -11,7 +19,6 @@ static void t_evolve_strats_make_population(struct e_trainer *trainer) {
     struct t_state_evolve_strats *state = trainer->state;
 
     int population = params->population;
-    float jitter_width = params->jitter_width;
 
     struct n_network *pop_list = state->population;
 
@@ -19,7 +26,7 @@ static void t_evolve_strats_make_population(struct e_trainer *trainer) {
         struct n_network *net = (pop_list + i);
 
         n_network_copy(trainer->reference, net);
-        t_evolve_strats_jitter(net, jitter_width);
+        t_evolve_strats_jitter(trainer, net);
     }
 }
 
@@ -53,6 +60,8 @@ static void t_evolve_strats_init(struct e_trainer *trainer) {
     state->curr_steps = params->steps_per_pop;
     state->is_done = 0;
     state->current = 0;
+
+    bm_state_init(&state->boxmuller, 0.0f, params->jitter_width);
 }
 
 static void t_evolve_strats_deinit(struct e_trainer *trainer) {
