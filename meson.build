@@ -13,8 +13,11 @@ sources = [
     'src/environment.c',
     'src/rng.c',
     'src/boxmuller.c',
+
     'src/train/t_hebbian.c',
     'src/train/t_evstrat.c',
+
+    'src/environments/e_classifier.c',
 ]
 
 m_dep = cc.find_library('m', required: true)
