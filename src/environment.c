@@ -16,7 +16,9 @@ void e_env_init(struct e_environment *env, struct e_environment_type *type, void
     env->type = type;
     env->trainer = NULL;
 
-    type->init(env, params);
+    if (type->init) {
+        type->init(env, params);
+    }
 }
 
 static void e_env_deinit_trainer(struct e_environment *env) {
@@ -42,7 +44,9 @@ void e_env_init_trainer(struct e_environment *env, struct e_trainer_type *type, 
 void e_env_deinit(struct e_environment *env) {
     e_env_deinit_trainer(env);
 
-    env->type->deinit(env);
+    if (env->type->deinit) {
+        env->type->deinit(env);
+    }
 
     if (env->env_state) {
         free(env->env_state);
@@ -124,6 +128,7 @@ void e_env_step(struct e_environment *env) {
     }
 
     env->steps++;
+    env->fitness = 0.0;
 }
 
 void e_env_start(struct e_environment *env) {
