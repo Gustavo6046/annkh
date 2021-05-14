@@ -99,6 +99,7 @@ void l_layer_init(struct l_layer *layer, struct l_layer_type *type, f_activation
     layer->activation = activation;
     layer->type = type;
     layer->input_buffer = malloc(sizeof(float) * in_size);
+    layer->output_buffer = malloc(sizeof(float) * out_size);
 
     type->init(layer);
 
@@ -123,6 +124,7 @@ void l_layer_deinit(struct l_layer *layer) {
     }
 
     free(layer->input_buffer);
+    free(layer->output_buffer);
 }
 
 void l_layer_process(struct l_layer *layer) {
