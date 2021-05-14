@@ -25,7 +25,7 @@ static void t_evolve_strats_make_population(struct e_trainer *trainer) {
     for (int i = 0; i < population; i++) {
         struct n_network *net = (pop_list + i);
 
-        n_network_copy(trainer->reference, net);
+        n_network_copy(net, trainer->reference);
         t_evolve_strats_jitter(trainer, net);
     }
 }
