@@ -156,9 +156,9 @@ static int t_evolve_strats_is_done(struct e_trainer *trainer) {
 }
 
 struct e_trainer_type t_trainer_evolve_strats = {
-    t_evolve_strats_init,
-    t_evolve_strats_step,
-    t_evolve_strats_epoch,
-    t_evolve_strats_is_done,
-    t_evolve_strats_deinit
+    .init = t_evolve_strats_init,
+    .step = t_evolve_strats_step,
+    .finished = t_evolve_strats_epoch,
+    .is_done = t_evolve_strats_is_done,
+    .deinit = t_evolve_strats_deinit
 };

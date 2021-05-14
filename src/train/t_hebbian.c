@@ -45,8 +45,5 @@ static void t_hebbian_step(struct e_trainer *trainer) {
 }
 
 struct e_trainer_type t_trainer_hebbian = {
-    NULL,
-    t_hebbian_step,
-    NULL,
-    NULL
+    .step = t_hebbian_step,
 };
