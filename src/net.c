@@ -33,7 +33,7 @@ void n_network_deinit(struct n_network *net) {
 }
 
 int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_activation activation, int in_size, int out_size) {
-    int idx;
+    int idx = 0;
 
     struct l_layer *new_layer = pl_allocate(&net->layers, &idx);
     l_layer_init(new_layer, type, activation, in_size, out_size);
