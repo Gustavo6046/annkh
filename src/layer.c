@@ -21,6 +21,8 @@ void l_activ_softmax(float *buffer, int size) {
     mu_softmax(buffer, size);
 }
 
+void l_activ_none(float *buffer, int size) {}
+
 ///////
 
 // linear
