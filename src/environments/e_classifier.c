@@ -15,11 +15,11 @@ static void et_classifier_init(struct e_environment *env, void *params) {
 static void et_classifier_step(struct e_environment *env) {
     struct ec_state *state = (struct ec_state *)env->env_state;
 
-    memcpy(env->inputs, state->params.inputs[state->which], sizeof(float) * env->net->in_size);
+    memcpy(env->inputs, state->params.inputs + (state->params.input_size * state->which), sizeof(float) * env->net->in_size);
     e_env_call_network(env);
 
     float fitness_sum = 0.0;
-    float *expected_outs = state->params.desired_outs[state->which];
+    float *expected_outs = state->params.desired_outs + (state->params.output_size * state->which);
 
     for (int i = 0; i < env->net->out_size; i++) {
         const float err = (env->outputs[i] - expected_outs[i]);

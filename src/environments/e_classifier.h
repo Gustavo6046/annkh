@@ -4,8 +4,10 @@
 
 
 struct ec_params {
-    float **inputs;
-    float **desired_outs;
+    float *inputs;
+    float *desired_outs;
+    int input_size;
+    int output_size;
     int num_examples;
 };
 
@@ -16,4 +18,4 @@ struct ec_state {
 
 extern struct e_environment_type et_classifier;
 
-#define EC_PARMS(ins, outs) ((struct ec_params) ({ ins, outs, (sizeof(ins)/sizeof(ins[0])) }))
+#define EC_PARMS(insize, outsize, ins, outs) (ins), (outs), (insize), (outsize), (sizeof(ins)/sizeof(ins[0]))
