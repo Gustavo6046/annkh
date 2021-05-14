@@ -33,6 +33,8 @@ void l_activ_sigmoid_fast(float *buffer, int size);
 void l_activ_softplus(float *buffer, int size);
 void l_activ_softmax(float *buffer, int size);
 
+static void l_activ_none(float *buffer, int size) {}
+
 extern struct l_layer_type layer_type_linear;
 extern struct l_layer_type layer_type_quadratic;
 
