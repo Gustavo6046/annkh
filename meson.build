@@ -40,7 +40,7 @@ tests = [
 ]
 
 foreach testname : tests
-    testexe = executable('tests/' + testname, dependencies: [annkh_dep, munit_dep])
+    testexe = executable('tests_' + testname, dependencies: [annkh_dep, munit_dep])
     test(testname, testexe)
 endforeach
 
@@ -53,7 +53,7 @@ example_include = include_directories([ 'src' ])
 
 foreach ename : examples
     exe = executable(
-        'example/' + ename,
+        'example_' + ename,
         'example/' + ename + '.c',
         dependencies: [annkh_dep],
         include_directories: example_include
