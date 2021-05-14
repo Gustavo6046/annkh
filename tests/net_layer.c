@@ -1,7 +1,7 @@
-#include "munit/munit.h"
+#include "munit.h"
 
 
-void main(void) {
-    
+int main(void) {
+
 }
 
