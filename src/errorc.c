@@ -1,6 +1,8 @@
 #include "errorc.h"
 
 
+const char *errorval;
+
 const char *const error_names[] = {
     "Success",
     "Success without return value",
