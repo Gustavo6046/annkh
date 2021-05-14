@@ -46,9 +46,13 @@ void p_free_pool(struct p_list *pool) {
 
 struct p_item *p_alloc_item_in_pool(struct p_list *pool, int *index) {
     struct p_item *res = &pool->items[pool->first_free];
-    *index += pool->first_free;
+
+    if (index) {
+        *index += pool->first_free;
+    }
 
     pool->num_used++;
+    res->data = pool->data + pool->first_free * pool->item_size;
 
     if (pool->num_used == pool->capacity) {
         pool->first_free = pool->capacity;
@@ -82,7 +86,12 @@ struct p_item *p_alloc_item(struct p_list *pool, int *index) {
 
             pool = pool->next;
         }
+
+        else {
+            break;
+        }
     }
+
 
     if (pool->num_used == pool->capacity) {
         // pool->next is NULL
@@ -164,7 +173,7 @@ static void p_root_guarantee_list(struct p_root *root) {
     else if (root->head == NULL) {
         int num_segs = 0;
 
-        for (root->head = root->list; root->head->next != NULL; root->head = root->head->next) {
+        for (root->head = root->list; root->head != NULL && root->head->next != NULL; root->head = root->head->next) {
             num_segs++;
         }
 
@@ -178,21 +187,24 @@ void p_root_initialize(struct p_root *root, int item_size, int capacity) {
     root->head_index_offs = 0;
     root->capacity = capacity;
     root->item_size = item_size;
+    root->num_items = 0;
 }
 
 struct p_item *p_root_alloc_item(struct p_root *root, int *index) {
     p_root_guarantee_list(root);
 
-    struct p_item *res = p_alloc_item(root->head, index);
-
     if (index) {
         *index = root->head_index_offs;
     }
 
+    struct p_item *res = p_alloc_item(root->head, index);
+
     while (root->head->next != NULL) {
         root->head = root->head->next;
+        root->head_index_offs += root->capacity;
     }
 
+    root->num_items++;
     return res;
 }
 
@@ -208,6 +220,7 @@ void p_root_free_item(struct p_root *root, struct p_item *item) {
     }
 
     p_free_item(item);
+    root->num_items--;
 }
 
 struct p_item *p_root_get_item(struct p_root *root, int which) {
@@ -220,6 +233,7 @@ struct p_item *p_root_get_item(struct p_root *root, int which) {
 
 void p_root_free_at(struct p_root *root, int which) {
     p_free_at(root->list, which);
+    root->num_items--;
 }
 
 void p_root_empty(struct p_root *root) {
@@ -227,6 +241,7 @@ void p_root_empty(struct p_root *root) {
     root->head = NULL;
     root->list = NULL;
     root->head_index_offs = 0;
+    root->num_items = 0;
 }
 
 int p_has(struct p_list *pool, int which) {

@@ -24,7 +24,7 @@ void pl_deinit(struct pl_pool_list *list) {
 }
 
 void *pl_allocate(struct pl_pool_list *list, int *index) {
-    int new_index;
+    int new_index = 0;
     struct p_item *item = p_root_alloc_item(list->items, &new_index);
     struct p_item *idx_item = p_root_alloc_item(&list->indices, NULL);
     *(int *)idx_item->data = new_index;

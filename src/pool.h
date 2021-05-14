@@ -29,9 +29,10 @@ struct p_root {
     int head_index_offs;
     int item_size;
     int capacity;
+    unsigned long num_items;
 };
 
-#define POOL_ROOT(item_type, capacity) { NULL, NULL, sizeof(item_type), (capacity) }
+#define POOL_ROOT(item_type, capacity) { NULL, NULL, 0, sizeof(item_type), (capacity), 0 }
 
 void p_init_pool(struct p_list *pool, struct p_list *prev, int item_size, int capacity);
 void p_free_pool(struct p_list *pool);
