@@ -125,10 +125,9 @@ static void t_evolve_strats_next(struct e_trainer *trainer) {
     struct t_state_evolve_strats *state = trainer->state;
 
     state->curr_steps = params->steps_per_pop;
-        
-    if (state->current < params->population) {
-        state->current++;
+    state->current++;
 
+    if (state->current < params->population) {
         trainer->env->net = &state->population[state->current];
     }
 
