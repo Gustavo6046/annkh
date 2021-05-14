@@ -18,4 +18,4 @@ struct ec_state {
 
 extern struct e_environment_type et_classifier;
 
-#define EC_PARMS(insize, outsize, ins, outs) (ins), (outs), (insize), (outsize), (sizeof(ins)/sizeof(ins[0]))
+#define EC_PARMS(insize, outsize, ins, outs) (ins), (outs), (insize), (outsize), (sizeof(ins)/sizeof(ins[0])/insize)
