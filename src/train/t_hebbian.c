@@ -5,6 +5,7 @@
 static void t_hebbian_step(struct e_trainer *trainer) {
     struct t_params_hebbian *params = trainer->params;
     float alpha = params->alpha;
+    const float goodness = alpha * trainer->env->fitness;
 
     for (struct pl_iter iter = pl_iterate(&trainer->reference->layers, 0, -1); pl_iter_has(&iter); pl_next(&iter)) {
         struct l_layer *layer = (struct l_layer *) iter.item;
@@ -14,10 +15,10 @@ static void t_hebbian_step(struct e_trainer *trainer) {
             float *weights = layer->weights + layer->out_size;
 
             for (int oi = 0; oi < layer->out_size; oi++) {
-                biases[oi] += alpha * trainer->env->fitness * layer->output_buffer[oi];
+                biases[oi] += goodness * layer->output_buffer[oi];
 
                 for (int ii = 0; ii < layer->in_size; ii++) {
-                    weights[oi] += alpha * trainer->env->fitness * layer->input_buffer[ii] * layer->output_buffer[oi];
+                    weights[oi] += goodness * layer->input_buffer[ii] * layer->output_buffer[oi];
                 }
 
                 weights += layer->in_size;
@@ -30,11 +31,11 @@ static void t_hebbian_step(struct e_trainer *trainer) {
             float *weights_2 = weights_1 + layer->out_size * layer->in_size;
 
             for (int oi = 0; oi < layer->out_size; oi++) {
-                biases[oi] += alpha * trainer->env->fitness * layer->output_buffer[oi];
+                biases[oi] += goodness * layer->output_buffer[oi];
 
                 for (int ii = 0; ii < layer->in_size; ii++) {
-                    weights_1[oi] += alpha * trainer->env->fitness * layer->input_buffer[ii] * layer->output_buffer[oi];
-                    weights_2[oi] += alpha * trainer->env->fitness * sqrtf(layer->input_buffer[ii]) * layer->output_buffer[oi];
+                    weights_1[oi] += goodness * layer->input_buffer[ii] * layer->output_buffer[oi];
+                    weights_2[oi] += goodness * sqrtf(layer->input_buffer[ii]) * layer->output_buffer[oi];
                 }
 
                 weights_1 += layer->in_size;
