@@ -90,7 +90,9 @@ void e_env_call_network(struct e_environment *env) {
 
 void e_env_step(struct e_environment *env) {
     if (env->state == ENV_STARTED) {
-        env->type->step(env);
+        if (env->type->step) {
+            env->type->step(env);
+        }
     }
 
     struct e_trainer *trainer = env->trainer;
@@ -133,7 +135,11 @@ void e_env_step(struct e_environment *env) {
 
 void e_env_start(struct e_environment *env) {
     env->state = ENV_STARTED;
-    env->type->start(env);
+
+    if (env->type->start) {
+        env->type->start(env);
+    }
+
     env->steps = 0;
 }
 
