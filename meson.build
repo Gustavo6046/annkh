@@ -40,7 +40,7 @@ tests = [
 ]
 
 foreach testname : tests
-    testexe = executable('tests_' + testname, dependencies: [annkh_dep, munit_dep])
+    testexe = executable('test_' + testname, 'tests/' + testname + '.c', dependencies: [annkh_dep, munit_dep])
     test(testname, testexe)
 endforeach
 
