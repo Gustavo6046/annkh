@@ -7,13 +7,18 @@
 
 
 float bm_next(struct bm_state *state) {
-    const float mag = state->sigma * sqrtf(2.0 * logf(state->a));
+    const float mag = state->sigma * sqrtf(-2.0 * logf(state->a));
 
     const float z1 = mag * cosf(two_pi * state->b) + state->mu;
     const float z2 = mag * sinf(two_pi * state->b) + state->mu;
 
-    state->a = state->b * z1;
+    state->a = 1.0f - state->b;
     state->b = rng_random_float(1.0);
+
+    // guarantee a > epsilon
+    while (state->a <= FLT_EPSILON) {
+        state->a = rng_random_float(1.0);
+    }
 
     return z2;
 }
