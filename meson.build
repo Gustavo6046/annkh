@@ -53,7 +53,7 @@ example_include = include_directories([ 'src' ])
 
 foreach ename : examples
     exe = executable(
-        'example_' + ename,
+        'example/' + ename,
         'example/' + ename + '.c',
         dependencies: [annkh_dep],
         include_directories: example_include
