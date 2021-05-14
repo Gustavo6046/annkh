@@ -47,6 +47,12 @@ int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_acti
     return idx;
 }
 
+static void n_network_register_conn(struct n_network *net, int input, int output) {
+    struct n_connection *item = pl_allocate(&net->connections, NULL);
+    item->from = input;
+    item->to = output;
+}
+
 error_code_t n_network_connect_layers(struct n_network *net, int input, int output) {
     if (input == -1 && output == -1) {
         ERR_RET(ES_NET_CONN_INPUT_OUTPUT);
@@ -60,6 +66,9 @@ error_code_t n_network_connect_layers(struct n_network *net, int input, int outp
         }
 
         net->input_layer = output;
+
+        n_network_register_conn(net, input, output);
+
         return -1;
     }
 
@@ -72,6 +81,8 @@ error_code_t n_network_connect_layers(struct n_network *net, int input, int outp
 
         net->output_layer = input;
         net->output_buffer = layer->output_buffer;
+
+        n_network_register_conn(net, input, output);
 
         return -1;
     }
@@ -86,9 +97,7 @@ error_code_t n_network_connect_layers(struct n_network *net, int input, int outp
     from_layer->output_buffer = to_layer->input_buffer + to_layer->in_used;
     to_layer->in_used += from_layer->out_size;
 
-    struct n_connection *item = pl_allocate(&net->connections, NULL);
-    item->from = input;
-    item->to = output;
+    n_network_register_conn(net, input, output);
 
     SUCCESS;
 }
