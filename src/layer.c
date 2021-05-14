@@ -106,11 +106,19 @@ void l_layer_init(struct l_layer *layer, struct l_layer_type *type, f_activation
     if (layer->num_weights > 0) {
         layer->weights = malloc(sizeof(float) * layer->num_weights);
     }
+
+    l_layer_one_weights(layer);
 }
 
 void l_layer_zero_weights(struct l_layer *layer) {
     for (int wi = 0; wi < layer->num_weights; wi++) {
         layer->weights[wi] = 0.0f;
+    }
+}
+
+void l_layer_one_weights(struct l_layer *layer) {
+    for (int wi = 0; wi < layer->num_weights; wi++) {
+        layer->weights[wi] = 1.0f;
     }
 }
 
