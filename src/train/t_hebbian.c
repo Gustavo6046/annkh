@@ -6,7 +6,7 @@ static void t_hebbian_step(struct e_trainer *trainer) {
     struct t_params_hebbian *params = trainer->params;
     float alpha = params->alpha;
 
-    for (struct pl_iter iter = pl_iterate(&trainer->reference->layers, 0, -1); pl_next(&iter);) {
+    for (struct pl_iter iter = pl_iterate(&trainer->reference->layers, 0, -1); pl_iter_has(&iter); pl_next(&iter)) {
         struct l_layer *layer = (struct l_layer *) iter.item;
 
         if (layer->type == &layer_type_linear) {

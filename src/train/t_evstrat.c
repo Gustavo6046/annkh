@@ -5,7 +5,7 @@
 static void t_evolve_strats_jitter(struct e_trainer *trainer, struct n_network *net) {
     struct t_state_evolve_strats *state = trainer->state;
 
-    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_next(&li);) {
+    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_iter_has(&li); pl_next(&li)) {
         struct l_layer *layer = li.item;
 
         for (int i = 0; i < layer->num_weights; i++) {
@@ -90,7 +90,7 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
         fitnesses[pi] = state->fitnesses[pi] * alpha;
     }
 
-    for (struct pl_iter iter = pl_iterate(&dest_net->layers, 0, -1); pl_next(&iter);) {
+    for (struct pl_iter iter = pl_iterate(&dest_net->layers, 0, -1); pl_iter_has(&iter); pl_next(&iter)) {
         struct l_layer *dest_layer = iter.item;
         float *dest_weights = dest_layer->weights;
 

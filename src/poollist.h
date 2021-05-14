@@ -30,3 +30,4 @@ void pl_free(struct pl_pool_list *list, int which);
 
 struct pl_iter pl_iterate(struct pl_pool_list *list, int from, int to);
 int pl_next(struct pl_iter *iterator);
+int pl_iter_has(struct pl_iter *iterator);

@@ -103,7 +103,7 @@ error_code_t n_network_process(struct n_network *net, float *inputs) {
     layer = pl_get(&net->layers, net->input_layer);
     memcpy(layer->input_buffer, inputs, sizeof(float) * layer->in_size);
 
-    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_next(&li);) {
+    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_iter_has(&li); pl_next(&li)) {
         layer = li.item;
         l_layer_process(layer);
     }
@@ -126,7 +126,7 @@ error_code_t n_network_process_to(struct n_network *net, float *inputs, float *o
 void n_network_copy(struct n_network *dest, struct n_network *net) {
     n_network_init(dest, net->in_size, net->out_size);
 
-    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_next(&li);) {
+    for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_iter_has(&li); pl_next(&li)) {
         struct l_layer *src_layer = li.item;
         int dest_li = n_network_add_layer(dest, src_layer->type, src_layer->activation, src_layer->in_size, src_layer->out_size);
 
@@ -134,7 +134,7 @@ void n_network_copy(struct n_network *dest, struct n_network *net) {
         memcpy(dest_layer->weights, src_layer->weights, sizeof(float) * src_layer->num_weights);
     }
 
-    for (struct pl_iter ci = pl_iterate(&net->connections, 0, -1); pl_next(&ci);) {
+    for (struct pl_iter ci = pl_iterate(&net->connections, 0, -1); pl_iter_has(&ci); pl_next(&ci)) {
         struct n_connection *conn = ci.item;
         n_network_connect_layers(dest, conn->from, conn->to);
     }
