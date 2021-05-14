@@ -141,6 +141,12 @@ void n_network_copy(struct n_network *dest, struct n_network *net) {
 
         struct l_layer *dest_layer = pl_get(&dest->layers, dest_li);
         memcpy(dest_layer->weights, src_layer->weights, sizeof(float) * src_layer->num_weights);
+
+        if (src_layer->state) {
+            memcpy(dest_layer->state, src_layer->state, src_layer->state_size);
+        }
+
+        dest_layer->state_size = src_layer->state_size;
     }
 
     for (struct pl_iter ci = pl_iterate(&net->connections, 0, -1); pl_iter_has(&ci); pl_next(&ci)) {
