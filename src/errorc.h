@@ -2,6 +2,7 @@
 
 #define ERR_RET(errsig) { return -errsig; }
 #define CALL_RET(val) { int err = (val); if (!es_code_is_success(err)) { return err; } }
+#define MAIN_CALL(val, callback, sig) { int err = (val); if (!es_code_is_success(err)) { (callback); return (sig); } }
 #define SUCCESS { return ES_SUCCESS; }
 #define EMPTY_SUCCESS { return ES_SUCCESS_NO_VALUE; }
 
