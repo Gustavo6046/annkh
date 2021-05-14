@@ -53,15 +53,15 @@ static void t_evolve_strats_init(struct e_trainer *trainer) {
     state->fitnesses = malloc(sizeof(float) * population);
     state->population = malloc(sizeof(struct n_network) * population);
 
-    t_evolve_strats_make_population(trainer);
-
-    trainer->env->net = &state->population[0];
-
     state->curr_steps = params->steps_per_pop;
     state->is_done = 0;
     state->current = 0;
 
     bm_state_init(&state->boxmuller, 0.0f, params->jitter_width);
+
+    t_evolve_strats_make_population(trainer);
+
+    trainer->env->net = &state->population[0];
 }
 
 static void t_evolve_strats_deinit(struct e_trainer *trainer) {
