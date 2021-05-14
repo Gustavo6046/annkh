@@ -40,6 +40,7 @@ extern struct l_layer_type layer_type_quadratic;
 
 void l_layer_init(struct l_layer *layer, struct l_layer_type *type, f_activation activation, int in_size, int out_size);
 void l_layer_zero_weights(struct l_layer *layer);
+void l_layer_one_weights(struct l_layer *layer);
 void l_layer_deinit(struct l_layer *layer);
 
 void l_layer_process(struct l_layer *layer);
