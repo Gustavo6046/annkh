@@ -221,9 +221,19 @@ void p_root_free_item(struct p_root *root, struct p_item *item) {
         if (pool == root->head) {
             root->head = pool->prev; // may already be NULL
         }
+
+        if (pool == root->list) {
+            root->list = pool->next;
+        }
+    }
+
+    // avoid having null pointers in a p_root
+    if (root->head == NULL || root->list == NULL) {
+        p_root_guarantee_list(root);
     }
 
     p_free_item(item);
+
     root->num_items--;
 }
 
