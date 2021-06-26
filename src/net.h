@@ -28,7 +28,7 @@ struct n_network {
 void n_network_init(struct n_network *net, int in_size, int out_size);
 void n_network_deinit(struct n_network *net);
 void n_network_copy(struct n_network *dest, struct n_network *net);
-int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_activation activation, int in_size, int out_size);
+int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_activation activation, int in_size, int out_size, struct l_layer **set_layer);
 error_code_t n_network_connect_layers(struct n_network *net, int input, int output);
 
 error_code_t n_network_process(struct n_network *net, float *inputs);

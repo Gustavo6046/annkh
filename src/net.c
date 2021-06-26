@@ -32,7 +32,7 @@ void n_network_deinit(struct n_network *net) {
     pl_deinit(&net->layers);
 }
 
-int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_activation activation, int in_size, int out_size) {
+int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_activation activation, int in_size, int out_size, struct l_layer **set_layer) {
     int idx = 0;
 
     struct l_layer *new_layer = pl_allocate(&net->layers, &idx);
@@ -42,6 +42,10 @@ int n_network_add_layer(struct n_network *net, struct l_layer_type *type, f_acti
 
     if (biggest > net->biggest_size) {
         net->biggest_size = biggest;
+    }
+
+    if (set_layer != NULL) {
+        *set_layer = new_layer;
     }
 
     return idx;
@@ -137,9 +141,10 @@ void n_network_copy(struct n_network *dest, struct n_network *net) {
 
     for (struct pl_iter li = pl_iterate(&net->layers, 0, -1); pl_iter_has(&li); pl_next(&li)) {
         struct l_layer *src_layer = li.item;
-        int dest_li = n_network_add_layer(dest, src_layer->type, src_layer->activation, src_layer->in_size, src_layer->out_size);
+        struct l_layer *dest_layer;
 
-        struct l_layer *dest_layer = pl_get(&dest->layers, dest_li);
+        n_network_add_layer(dest, src_layer->type, src_layer->activation, src_layer->in_size, src_layer->out_size, &dest_layer);
+
         memcpy(dest_layer->weights, src_layer->weights, sizeof(float) * src_layer->num_weights);
 
         if (src_layer->state) {
