@@ -25,11 +25,13 @@ void mu_softplus(float *buffer, int size) {
 }
 
 void mu_softmax(float *buffer, int size) {
-    static float val_max = -INFINITY;
-    static float val_sum = 0.0;
+    float val_max = -INFINITY;
+    float val_sum = 0.0;
 
     for (int i = 0; i < size; i++) {
-        if (buffer[i] > val_max) val_max = buffer[i];
+        if (buffer[i] > val_max) {
+            val_max = buffer[i];
+        }
     }
 
     for (int i = 0; i < size; i++) {
