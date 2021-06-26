@@ -142,6 +142,10 @@ struct p_item *p_get_item(struct p_list *pool, int which) {
 }
 
 void p_deinit(struct p_list *pool) {
+    if (pool == NULL) {
+        return;
+    }
+
     struct p_list *head = pool;
 
     while (head->next != NULL) {
