@@ -83,6 +83,8 @@ struct pl_iter pl_iterate(struct pl_pool_list *list, int from, int to) {
 
 int pl_next(struct pl_iter *iterator) {
     do {
+        iterator->index++;
+
         if (iterator->index >= iterator->list->length) {
             iterator->index = -1;
             return 0;
@@ -92,8 +94,6 @@ int pl_next(struct pl_iter *iterator) {
             iterator->index = -1;
             return 0;
         }
-
-        iterator->index++;
     } while (!pl_has(iterator->list, iterator->index));
 
     iterator->item = pl_get(iterator->list, iterator->index);
