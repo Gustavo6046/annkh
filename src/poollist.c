@@ -26,7 +26,7 @@ void pl_deinit(struct pl_pool_list *list) {
 void *pl_allocate(struct pl_pool_list *list, int *index) {
     int new_index = 0;
     struct p_item *item = p_root_alloc_item(list->items, &new_index);
-    struct p_item *idx_item = p_root_alloc_item(&list->indices, NULL);
+    struct p_item *idx_item = p_root_alloc_item(&list->indices, index);
     *(int *)idx_item->data = new_index;
 
     if (list->middle_freed) {
@@ -35,10 +35,6 @@ void *pl_allocate(struct pl_pool_list *list, int *index) {
 
     else {
         list->length++;
-    }
-
-    if (index) {
-        *index = new_index;
     }
 
     return item->data;
