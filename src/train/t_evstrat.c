@@ -82,12 +82,19 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
     float alpha = params->alpha / params->population;
 
     struct n_network *dest_net = trainer->reference;
+    struct n_network *best_net = NULL;
+    float best_fit;
 
     // (precompute fitness products)
     float *fitnesses = malloc(sizeof(float) * params->population);
 
     for (int pi = 0; pi < population; pi++) {
-        fitnesses[pi] = state->fitnesses[pi] * alpha;
+        float fit = fitnesses[pi] = state->fitnesses[pi] * alpha;
+
+        if (fit > best_fit || best_net == NULL) {
+            best_fit = fit;
+            best_net = &state->population[pi];
+        }
     }
 
     for (struct pl_iter iter = pl_iterate(&dest_net->layers, 0, -1); pl_iter_has(&iter); pl_next(&iter)) {
@@ -111,6 +118,9 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
     }
 
     free(fitnesses);
+
+    // set reference to best
+    n_network_copy(trainer->reference, best_net);
 
     // reset population
     t_evolve_strats_deinit_population(trainer);
