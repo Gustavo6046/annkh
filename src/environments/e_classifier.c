@@ -18,6 +18,10 @@ static void et_classifier_step(struct e_environment *env) {
     memcpy(env->inputs, state->params.inputs + (state->params.input_size * state->which), sizeof(float) * env->net->in_size);
     e_env_call_network(env);
 
+    if (state->which == 0) {
+        env->fitness = 0.0;
+    }
+
     float fitness_sum = 0.0;
     float *expected_outs = state->params.desired_outs + (state->params.output_size * state->which);
 
@@ -26,7 +30,7 @@ static void et_classifier_step(struct e_environment *env) {
         fitness_sum -= err * err;
     }
 
-    env->fitness = fitness_sum;    
+    env->fitness += fitness_sum;    
 
     state->which = (state->which + 1) % state->params.num_examples;
 }

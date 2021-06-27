@@ -130,7 +130,6 @@ void e_env_step(struct e_environment *env) {
     }
 
     env->steps++;
-    env->fitness = 0.0;
 }
 
 void e_env_start(struct e_environment *env) {
