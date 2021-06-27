@@ -7,6 +7,10 @@
 #include "environments/e_classifier.h"
 #include "train/t_evstrat.h"
 
+#define NUM_EPOCHS 10
+#define POP_SIZE 20
+#define NUM_STEPS NUM_EPOCHS * POP_SIZE * 4
+
 
 void cleanup(struct e_environment *env, struct n_network *net) {
     printf("Execution status: %s\n\n", errorval);
@@ -35,11 +39,11 @@ int main(void) {
     n_network_init(&net, 2, 1);
 
     fprintf(stderr, "   - Middle layer definition");
-    int l_middle = n_network_add_layer(&net, &layer_type_linear, &l_activ_sigmoid_fast, 2, 4);
+    int l_middle = n_network_add_layer(&net, &layer_type_linear, &l_activ_sigmoid_fast, 2, 4, NULL);
     fprintf(stderr, " (%d)\n", l_middle);
 
     fprintf(stderr, "   - Out layer definition");
-    int l_out = n_network_add_layer(&net, &layer_type_linear, &l_activ_relu, 4, 1);
+    int l_out = n_network_add_layer(&net, &layer_type_linear, &l_activ_softmax, 4, 1, NULL);
     fprintf(stderr, " (%d)\n", l_out);
 
     fprintf(stderr, "   - Layer connections\n");
@@ -100,19 +104,19 @@ int main(void) {
 
     struct t_params_evolve_strats trainparms = {
         .alpha = 0.3,
-        .jitter_width = 0.8,
-        .population = 20,
-        .steps_per_pop = 1
+        .jitter_width = 0.3,
+        .population = POP_SIZE,
+        .steps_per_pop = 4
     };
 
     e_env_init_trainer(&env, &t_trainer_evolve_strats, &trainparms);
 
-    e_env_training_activate(&env, 100);
+    e_env_training_activate(&env, NUM_STEPS + 1);
 
-    fprintf(stderr, " * Call 100 epochs\n");
-    for (int i = 0; i < 100; i++) {
-        e_env_loopstep(&env, 100);
-        fprintf(stderr, "   - Env loop steps, inputs->output: (%f, %f) -> %f\n", env.steps, inputs[0], inputs[1], output);
+    fprintf(stderr, " * Call %d steps\n", NUM_STEPS);
+    for (int i = 0; i < NUM_STEPS; i++) {
+        e_env_loopstep(&env, NUM_STEPS);
+        fprintf(stderr, "   - Env loop step #%d, inputs->output: (%f, %f) -> %f (fitness %f)\n", i + 1, env.steps, inputs[0], inputs[1], output, env.fitness);
     }
 
     // step 5. test our trained network
@@ -123,7 +127,7 @@ int main(void) {
         inputs[0] = our_inputs[i * 2];
         inputs[1] = our_inputs[i * 2 + 1];
 
-        n_network_process_to(&net, inputs, &output);
+        n_network_process_to(env.net, inputs, &output);
 
         fprintf(stderr, "   - Final net result: (%f,%f) -> %f\n", inputs[0], inputs[1], output);
     }
