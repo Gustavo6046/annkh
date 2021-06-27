@@ -11,6 +11,14 @@ void pl_initialize(struct pl_pool_list *list, struct p_root *root, int segment_s
     p_root_initialize(&list->indices, sizeof(int), segment_size);
 }
 
+struct pl_pool_list pl_make(struct p_root *root, int segment_size) {
+    struct pl_pool_list list;
+
+    pl_initialize(&list, root, segment_size);
+
+    return list;
+}
+
 void pl_deinit(struct pl_pool_list *list) {
     for (int li = 0; li < list->length - list->middle_freed; li++) {
         if (p_root_has(&list->indices, li)) {
