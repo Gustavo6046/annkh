@@ -1,4 +1,6 @@
 #include <math.h>
+#include <string.h>
+
 #include "t_evstrat.h"
 
 
@@ -88,6 +90,8 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
     // (precompute fitness products)
     float *fitnesses = malloc(sizeof(float) * params->population);
 
+    float *orig_weights = malloc(sizeof(float) * trainer->reference->biggest_size);
+
     for (int pi = 0; pi < population; pi++) {
         float fit = fitnesses[pi] = state->fitnesses[pi] * alpha;
 
@@ -101,9 +105,7 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
         struct l_layer *dest_layer = iter.item;
         float *dest_weights = dest_layer->weights;
 
-        for (int wi = 0; wi < dest_layer->num_weights; wi++) {
-            dest_weights[wi] = 0.0;
-        }
+        memcpy(orig_weights, dest_weights, sizeof(float) * dest_layer->num_weights);
 
         for (int pi = 0; pi < population; pi++) {
             float fitness = fitnesses[pi];
@@ -112,12 +114,13 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
             float *src_weights = src_layer->weights;
 
             for (int wi = 0; wi < dest_layer->num_weights; wi++) {
-                dest_weights[wi] += src_weights[wi] * fitness;
+                dest_weights[wi] += (src_weights[wi] - orig_weights[wi]) * fitness;
             }
         }
     }
 
     free(fitnesses);
+    free(orig_weights);
 
     // set reference to best
     n_network_copy(trainer->reference, best_net);
