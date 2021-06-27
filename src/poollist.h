@@ -20,6 +20,7 @@ struct pl_iter {
 
 
 void pl_initialize(struct pl_pool_list *list, struct p_root *root, int segment_size);
+struct pl_pool_list pl_make(struct p_root *root, int segment_size);
 void pl_deinit(struct pl_pool_list *list);
 
 void *pl_allocate(struct pl_pool_list *list, int *index);
