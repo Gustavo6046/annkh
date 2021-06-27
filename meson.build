@@ -23,24 +23,25 @@ sources = [
 
 m_dep = cc.find_library('m', required: true)
 
-libannkh = library('annkh', sources, dependencies: [m_dep])
+munit_proj = subproject('munit')
+munit_dep = munit_proj.get_variable('munit_dep')
+
+libannkh = library('annkh', sources, dependencies: [m_dep, munit_dep], include_directories: ['src', 'subprojects'])
 
 annkh_dep = declare_dependency(
-    include_directories: 'src',
+    include_directories: ['src'],
     link_with: libannkh,
     dependencies: [m_dep]
 )
 
 # Build tests
-munit_proj = subproject('munit')
-munit_dep = munit_proj.get_variable('munit_dep')
-
 tests = [
-    'net_layer'
+    'net_layer',
+    'poolalloc'
 ]
 
 foreach testname : tests
-    testexe = executable('test_' + testname, 'tests/' + testname + '.c', dependencies: [annkh_dep, munit_dep])
+    testexe = executable('test_' + testname, 'tests/' + testname + '.c', dependencies: [annkh_dep, munit_dep], include_directories: 'subprojects')
     test(testname, testexe)
 endforeach
 
