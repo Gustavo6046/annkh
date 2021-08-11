@@ -1,4 +1,4 @@
-#include "munit.h"
+#include "munit/munit.h"
 
 
 int main(void) {
