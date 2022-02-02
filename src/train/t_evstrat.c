@@ -95,7 +95,7 @@ static void t_evolve_strats_epoch(struct e_trainer *trainer) {
     for (int pi = 0; pi < population; pi++) {
         float fit = fitnesses[pi] = state->fitnesses[pi] * alpha;
 
-        if (fit > best_fit || best_net == NULL) {
+        if (best_net == NULL || fit > best_fit) {
             best_fit = fit;
             best_net = &state->population[pi];
         }
