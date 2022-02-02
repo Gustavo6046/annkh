@@ -4,5 +4,5 @@
 
 
 float rng_random_float(float size) {
-    return (double) rand() / ((double) (RAND_MAX) / size);
+    return (double) rand() * size / (double) RAND_MAX;
 }
