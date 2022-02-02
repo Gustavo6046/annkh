@@ -9,7 +9,7 @@
 float bm_next(struct bm_state *state) {
     const float mag = state->sigma * sqrtf(-2.0 * logf(state->a));
 
-    const float z1 = mag * cosf(two_pi * state->b) + state->mu;
+    //const float z1 = mag * cosf(two_pi * state->b) + state->mu;
     const float z2 = mag * sinf(two_pi * state->b) + state->mu;
 
     state->a = 1.0f - state->b;
